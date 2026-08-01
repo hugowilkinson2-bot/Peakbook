@@ -14,5 +14,5 @@ export function MapCanvas() {
     map.addControl(new mapboxgl.NavigationControl({ showCompass: true }), "top-right");
     return () => map.remove();
   }, []);
-  return <div ref={container} aria-label="Mapa de rutas" className="map-surface h-full w-full"/>;
+  return <div ref={container} aria-label="Mapa de aventuras" className="map-surface h-full w-full"/>;
 }

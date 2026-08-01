@@ -6,8 +6,8 @@ import { CircleUserRound, House, Map, MapPinned, SquarePlus } from "lucide-react
 
 const items = [
   { href: "/", label: "Inicio", icon: House },
-  { href: "/routes", label: "Mis rutas", icon: MapPinned },
-  { href: "/routes/new", label: "Nueva", icon: SquarePlus },
+  { href: "/adventures", label: "Aventuras", icon: MapPinned },
+  { href: "/adventures/new", label: "Nueva", icon: SquarePlus },
   { href: "/map", label: "Mapa", icon: Map },
   { href: "/profile", label: "Perfil", icon: CircleUserRound },
 ];
