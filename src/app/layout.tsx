@@ -8,7 +8,7 @@ const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
 export const metadata: Metadata = {
   title: { default: "PeakBook", template: "%s · PeakBook" },
-  description: "Guarda tus aventuras, trails y cimas. Tu historia en la montaña.",
+  description: "Tu atlas personal de cimas, ascensiones y recuerdos de montaña.",
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "PeakBook" },
 };

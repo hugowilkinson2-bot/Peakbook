@@ -10,9 +10,9 @@ export type Database = {
         Relationships: [];
       };
       peaks: {
-        Row: { id: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia: string | null; pais: string };
-        Insert: { id?: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia?: string | null; pais: string };
-        Update: { id?: string; nombre?: string; altitud?: number; latitud?: number; longitud?: number; provincia?: string | null; pais?: string };
+        Row: { id: string; globe_id: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia: string | null; pais: string; descripcion: string | null; foto_principal_url: string | null; dificultad: Database["public"]["Enums"]["adventure_difficulty"] };
+        Insert: { id?: string; globe_id?: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia?: string | null; pais: string; descripcion?: string | null; foto_principal_url?: string | null; dificultad?: Database["public"]["Enums"]["adventure_difficulty"] };
+        Update: { id?: string; globe_id?: string; nombre?: string; altitud?: number; latitud?: number; longitud?: number; provincia?: string | null; pais?: string; descripcion?: string | null; foto_principal_url?: string | null; dificultad?: Database["public"]["Enums"]["adventure_difficulty"] };
         Relationships: [];
       };
       adventure_peaks: {

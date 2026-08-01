@@ -1,6 +1,6 @@
 import { ResponsivePhoto } from "@/components/responsive-photo";
 
-export function MemoryPhoto({
+export function PeakPhoto({
   src,
   alt,
   sizes,
@@ -13,14 +13,6 @@ export function MemoryPhoto({
   className?: string;
   priority?: boolean;
 }) {
-  return (
-    <ResponsivePhoto
-      src={src}
-      fallbackSrc="/memories-dawn.png"
-      alt={alt}
-      priority={priority}
-      sizes={sizes}
-      className={className}
-    />
-  );
+  return <ResponsivePhoto src={src} fallbackSrc="/peak-aneto.png" alt={alt} sizes={sizes} className={className} priority={priority} />;
 }
+

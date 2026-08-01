@@ -13,6 +13,7 @@ Aplicación móvil-first para registrar aventuras de montaña, trails y cimas.
 - `src/features/adventures/domain`: entidades y contratos del dominio.
 - `src/features/adventures/data`: adaptadores y datos temporales de presentación.
 - `src/features/memories`: modelo de lectura y componentes editoriales del álbum Recuerdos.
+- `src/features/peaks`: identidad geográfica, catálogo, estadísticas y presentación de cada cima.
 - `src/types/database.types.ts`: contrato tipado del esquema Supabase.
 - `src/lib/supabase`: clientes tipados para navegador y servidor.
 - `supabase/migrations`: fuente de verdad versionada de la base de datos.
@@ -28,6 +29,10 @@ Para conectarla, copia `.env.example` a `.env.local`, configura la URL y la clav
 ## v0.6 · The WOW Release
 
 La pantalla **Recuerdos** transforma las aventuras en un álbum editorial responsive. Incluye timeline vertical, portadas y cimas leídas desde Supabase, recuerdo automático de hace un año, mejor fotografía y última cima conseguida. Si una aventura todavía no tiene portada, se utiliza una fotografía editorial local de forma determinista.
+
+## v0.7 · El corazón de PeakBook
+
+**Cimas** pasa a ser la entidad protagonista. El atlas incluye búsqueda instantánea, filtros geográficos y personales, tarjetas fotográficas y una ficha completa con mapa, estadísticas, timeline de ascensiones y galería. Cada cima conserva coordenadas WGS84, UUID y un vector cartesiano normalizado preparado para el futuro globo 3D.
 
 ## Stack
 

@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CircleUserRound, House, Images, MapPinned, SquarePlus } from "lucide-react";
+import { CircleUserRound, House, Images, MountainSnow, SquarePlus } from "lucide-react";
 
 const items = [
   { href: "/", label: "Inicio", icon: House },
-  { href: "/adventures", label: "Aventuras", icon: MapPinned },
+  { href: "/peaks", label: "Cimas", icon: MountainSnow },
   { href: "/adventures/new", label: "Nueva", icon: SquarePlus },
   { href: "/memories", label: "Recuerdos", icon: Images },
   { href: "/profile", label: "Perfil", icon: CircleUserRound },
@@ -37,6 +37,5 @@ export function BottomNav() {
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   if (href === "/adventures/new") return pathname === href;
-  if (href === "/adventures") return pathname === href || (pathname.startsWith(`${href}/`) && pathname !== "/adventures/new");
   return pathname.startsWith(href);
 }
