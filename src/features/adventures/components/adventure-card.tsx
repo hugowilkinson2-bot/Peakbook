@@ -1,22 +1,23 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowUpRight, Clock3, Mountain, Route } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import type { AdventureSummary } from "../domain/adventure";
-import { formatDifficulty, formatDistance, formatDuration, formatElevation } from "../presentation/formatters";
+import type { Adventure } from "../domain/adventure";
+import { formatDate, formatDifficulty, formatDistance, formatDuration, formatElevation } from "../presentation/formatters";
 
 const imagePositions: Record<string, string> = { aneto: "50% 48%", pedraforca: "72% 52%", ordesa: "26% 60%" };
 
-export function AdventureCard({ adventure, compact = false }: { adventure: AdventureSummary; compact?: boolean }) {
+export function AdventureCard({ adventure, compact = false }: { adventure: Adventure; compact?: boolean }) {
   return (
     <article className="premium-card group overflow-hidden rounded-[1.75rem] border border-black/[.035] bg-white shadow-card">
       <div className={`relative overflow-hidden ${compact ? "h-44" : "h-56 md:h-64"}`}>
-        <Image src={adventure.imagen} alt={`Paisaje de ${adventure.titulo}`} fill sizes={compact ? "(max-width: 768px) 100vw, 50vw" : "100vw"} className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035]" style={{ objectPosition: imagePositions[adventure.id] ?? "center" }} />
+        <Image src="/peakbook-hero.png" alt={`Paisaje de ${adventure.titulo}`} fill sizes={compact ? "(max-width: 768px) 100vw, 50vw" : "100vw"} className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035]" style={{ objectPosition: imagePositions[adventure.id] ?? "center" }} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/15" />
         <div className="absolute inset-x-4 top-4 flex items-start justify-between">
           <span className="rounded-full border border-white/20 bg-black/20 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.12em] text-white backdrop-blur-xl">{formatDifficulty(adventure.dificultad)}</span>
-          <button aria-label={`Abrir ${adventure.titulo}`} className="tap-scale grid h-10 w-10 place-items-center rounded-full border border-white/30 bg-white/90 text-ink shadow-sm backdrop-blur"><ArrowUpRight size={17} strokeWidth={1.9}/></button>
+          <Link href={`/adventures/${adventure.id}`} aria-label={`Abrir ${adventure.titulo}`} className="tap-scale grid h-10 w-10 place-items-center rounded-full border border-white/30 bg-white/90 text-ink shadow-sm backdrop-blur"><ArrowUpRight size={17} strokeWidth={1.9}/></Link>
         </div>
-        <div className="absolute inset-x-5 bottom-5 text-white"><p className="text-[11px] font-medium text-white/70">{adventure.lugar}</p><h3 className="mt-1 text-xl font-semibold tracking-[-.035em]">{adventure.titulo}</h3></div>
+        <div className="absolute inset-x-5 bottom-5 text-white"><p className="text-[11px] font-medium text-white/70">{formatDate(adventure.fecha)}</p><h3 className="mt-1 text-xl font-semibold tracking-[-.035em]">{adventure.titulo}</h3></div>
       </div>
       <div className="grid grid-cols-3 divide-x divide-black/[.06] px-2 py-4 text-ink">
         <Metric icon={Route} value={formatDistance(adventure.distancia)} label="Distancia" />

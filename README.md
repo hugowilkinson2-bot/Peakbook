@@ -16,7 +16,13 @@ Aplicación móvil-first para registrar aventuras de montaña, trails y cimas.
 - `src/lib/supabase`: clientes tipados para navegador y servidor.
 - `supabase/migrations`: fuente de verdad versionada de la base de datos.
 
-El esquema usa nombres `snake_case` en PostgreSQL y entidades PascalCase en TypeScript. Row Level Security está activado y cerrado por defecto hasta definir usuarios y propiedad de las aventuras.
+El esquema usa nombres `snake_case` en PostgreSQL y entidades PascalCase en TypeScript. Row Level Security está activado; v0.4 incorpora políticas temporales de usuario único que se sustituirán al añadir autenticación.
+
+## v0.4
+
+La primera versión utilizable incluye CRUD completo de aventuras, persistencia Supabase, mutaciones optimistas con rollback, estados de carga/error, búsqueda, filtro por año y ordenación por fecha. GPX, fotos y mapas permanecen fuera de alcance.
+
+Para conectarla, copia `.env.example` a `.env.local`, configura la URL y la clave publicable de Supabase y aplica las migraciones de `supabase/migrations`.
 
 ## Stack
 

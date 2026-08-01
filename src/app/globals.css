@@ -23,4 +23,6 @@ button { cursor: pointer; }
 .map-surface:empty { background-color: #dce2d3; background-image: linear-gradient(34deg, transparent 46%, rgba(23,63,44,.12) 47%, transparent 49%), repeating-radial-gradient(ellipse at 10% 90%, transparent 0 18px, rgba(23,63,44,.12) 19px 20px); }
 .map-surface:empty::after { content: "Añade NEXT_PUBLIC_MAPBOX_TOKEN para cargar el mapa interactivo"; display: grid; place-items: center; height: 100%; padding: 3rem; text-align: center; font-size: .75rem; color: rgba(23,34,28,.55); }
 input, textarea, select { outline: none; }
+.field-input { width: 100%; border: 0; background: transparent; color: #171a18; font-size: .875rem; font-weight: 600; }
+.field-input::placeholder { color: rgba(23,26,24,.25); font-weight: 500; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }

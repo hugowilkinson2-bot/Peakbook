@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CircleUserRound, House, Map, MapPinned, SquarePlus } from "lucide-react";
+import { CircleUserRound, House, MapPinned, SquarePlus } from "lucide-react";
 
 const items = [
   { href: "/", label: "Inicio", icon: House },
   { href: "/adventures", label: "Aventuras", icon: MapPinned },
   { href: "/adventures/new", label: "Nueva", icon: SquarePlus },
-  { href: "/map", label: "Mapa", icon: Map },
   { href: "/profile", label: "Perfil", icon: CircleUserRound },
 ];
 
@@ -16,7 +15,7 @@ export function BottomNav() {
   const pathname = usePathname();
   return (
     <nav aria-label="Navegación principal" className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-[38rem] px-3 pb-[max(.75rem,env(safe-area-inset-bottom))] sm:px-5">
-      <div className="grid grid-cols-5 rounded-[1.65rem] border border-white/80 bg-white/88 px-2 py-2 shadow-[0_18px_55px_rgba(17,28,22,.18)] ring-1 ring-black/[.025] backdrop-blur-2xl supports-[backdrop-filter]:bg-white/75">
+      <div className="grid grid-cols-4 rounded-[1.65rem] border border-white/80 bg-white/88 px-2 py-2 shadow-[0_18px_55px_rgba(17,28,22,.18)] ring-1 ring-black/[.025] backdrop-blur-2xl supports-[backdrop-filter]:bg-white/75">
         {items.map(({ href, label, icon: Icon }) => {
           const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
           return (

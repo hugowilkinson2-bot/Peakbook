@@ -14,4 +14,4 @@ supabase gen types typescript --local > src/types/database.types.ts
 
 Vincula el proyecto una sola vez con `supabase link --project-ref <project-ref>` y aplica las migraciones con `supabase db push`.
 
-Las tablas tienen Row Level Security activado y no incluyen políticas públicas. Las políticas se añadirán cuando se defina el modelo de usuarios y propiedad de aventuras.
+La migración v0.4 habilita acceso CRUD para `anon` y `authenticated` porque esta entrega aún es de usuario único y no incluye autenticación. Antes de exponer PeakBook públicamente, añade propiedad por usuario y sustituye estas políticas por reglas basadas en `auth.uid()`.

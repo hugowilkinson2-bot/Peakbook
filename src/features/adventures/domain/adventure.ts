@@ -6,7 +6,7 @@ export interface Adventure {
   id: string;
   titulo: string;
   fecha: string;
-  descripcion: string | null;
+  notas: string | null;
   distancia: number;
   desnivelPositivo: number;
   desnivelNegativo: number;
@@ -17,16 +17,10 @@ export interface Adventure {
   createdAt: string;
 }
 
-export interface Peak {
-  id: string;
-  nombre: string;
-  altitud: number;
-  latitud: number;
-  longitud: number;
-  provincia: string | null;
-  pais: string;
-}
+export type AdventureInput = Omit<Adventure, "id" | "createdAt">;
+export type AdventureUpdate = Partial<AdventureInput>;
 
+export interface Peak { id: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia: string | null; pais: string }
 export interface AdventurePeak { adventureId: string; peakId: string; orden: number }
 export interface Photo { id: string; adventureId: string; url: string; portada: boolean; descripcion: string | null }
 export interface Equipment { id: string; nombre: string; categoria: string; marca: string | null; modelo: string | null }
@@ -39,12 +33,4 @@ export type AdventureDetail = Adventure & {
   photos: Photo[];
   equipment: Equipment[];
   people: Person[];
-};
-
-export type AdventureSummary = Pick<
-  Adventure,
-  "id" | "titulo" | "fecha" | "distancia" | "desnivelPositivo" | "tiempo" | "dificultad"
-> & {
-  lugar: string;
-  imagen: string;
 };
