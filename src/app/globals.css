@@ -2,13 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light; }
+:root { color-scheme: light; --ease-premium: cubic-bezier(.22,1,.36,1); }
 * { box-sizing: border-box; }
-html { background: #f3f1e9; }
-body { margin: 0; background: #f3f1e9; color: #17221c; font-family: var(--font-manrope), ui-sans-serif, system-ui; -webkit-font-smoothing: antialiased; }
+html { background: #f3f5f1; scroll-behavior: smooth; }
+body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 50% -20%, #ffffff 0, #f3f5f1 42%, #edf0eb 100%); color: #171a18; font-family: var(--font-manrope), ui-sans-serif, system-ui; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
-::selection { background: #d7f06e; color: #173f2c; }
+::selection { background: #d9f27b; color: #153c2c; }
+@keyframes screen-in { from { opacity: 0; transform: translateY(10px) scale(.995); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.screen-enter { animation: screen-in .55s var(--ease-premium) both; }
+.stagger-in > * { animation: rise-in .6s var(--ease-premium) both; }
+.stagger-in > *:nth-child(2) { animation-delay: 70ms; }
+.stagger-in > *:nth-child(3) { animation-delay: 140ms; }
+.stagger-in > *:nth-child(4) { animation-delay: 210ms; }
+.premium-card { transition: transform .35s var(--ease-premium), box-shadow .35s var(--ease-premium), border-color .35s ease; }
+.premium-card:hover { transform: translateY(-3px); box-shadow: 0 22px 65px rgba(20,37,29,.12); }
+.tap-scale { transition: transform .22s var(--ease-premium), background-color .22s ease, color .22s ease; }
+.tap-scale:active { transform: scale(.96); }
 .map-surface:empty { background-color: #dce2d3; background-image: linear-gradient(34deg, transparent 46%, rgba(23,63,44,.12) 47%, transparent 49%), repeating-radial-gradient(ellipse at 10% 90%, transparent 0 18px, rgba(23,63,44,.12) 19px 20px); }
 .map-surface:empty::after { content: "Añade NEXT_PUBLIC_MAPBOX_TOKEN para cargar el mapa interactivo"; display: grid; place-items: center; height: 100%; padding: 3rem; text-align: center; font-size: .75rem; color: rgba(23,34,28,.55); }
 input, textarea, select { outline: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
