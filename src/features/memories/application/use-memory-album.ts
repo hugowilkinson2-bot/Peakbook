@@ -59,13 +59,19 @@ export function curateMemories(
   enrichment: MemoryEnrichment = emptyEnrichment,
 ): AdventureMemory[] {
   return adventures.map((adventure) => {
-    const photos = enrichment.photosByAdventure.get(adventure.id) ?? [];
+    const photos = enrichment.photosByAdventure.get(adventure.id) ?? adventure.photos.map(photo => ({
+      id: photo.id,
+      adventureId: photo.adventureId,
+      url: photo.url,
+      portada: photo.portada,
+      descripcion: photo.descripcion,
+    }));
     const primary = photos.find(({ portada }) => portada) ?? photos[0];
     const fallback = editorialCovers[stableCoverIndex(adventure.id)];
     return {
       adventure,
       photos,
-      peaks: enrichment.peaksByAdventure.get(adventure.id) ?? [],
+      peaks: enrichment.peaksByAdventure.get(adventure.id) ?? (adventure.peak ? [{ id: adventure.peak.id, nombre: adventure.peak.nombre, altitud: adventure.peak.altitud, orden: 1 }] : []),
       cover: {
         src: primary?.url ?? fallback,
         alt: primary?.descripcion ?? `Recuerdo de ${adventure.titulo}`,
@@ -101,4 +107,3 @@ function stableCoverIndex(id: string) {
   for (const character of id) hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
   return hash % editorialCovers.length;
 }
-

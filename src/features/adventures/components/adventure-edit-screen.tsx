@@ -14,6 +14,6 @@ export function AdventureEditScreen({ id }: { id: string }) {
   if (isLoading) return <AppShell><AdventureLoading cards={1}/></AppShell>;
   if (!adventure) return <AppShell>{error ? <AdventureError message={error} onRetry={()=>void reload()}/> : <AdventureError message="Esta aventura ya no está disponible."/>}</AppShell>;
   return <AppShell><ScreenHeader eyebrow="Actualiza el recuerdo" title="Editar aventura" description="Los cambios se reflejarán al instante en tu archivo."/>
-    <AdventureForm initialValue={adventure} submitLabel="Guardar cambios" onSubmit={async input => { const updated = await updateAdventure(id, input); router.replace(`/adventures/${updated.id}`); }}/>
+    <AdventureForm initialValue={adventure} submitLabel="Guardar cambios" onSubmit={async mutation => { const updated = await updateAdventure(id, mutation); router.replace(`/adventures/${updated.id}`); }}/>
   </AppShell>;
 }

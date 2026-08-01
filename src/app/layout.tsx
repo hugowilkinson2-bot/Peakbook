@@ -1,10 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope } from "next/font/google";
 import { PwaRegister } from "@/components/pwa-register";
 import { AdventureProvider } from "@/features/adventures/application/adventure-provider";
 import "./globals.css";
-
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
 export const metadata: Metadata = {
   title: { default: "PeakBook", template: "%s · PeakBook" },
@@ -15,5 +12,5 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#f3f1e9", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="es"><body className={manrope.variable}><PwaRegister/><AdventureProvider>{children}</AdventureProvider></body></html>;
+  return <html lang="es"><body><PwaRegister/><AdventureProvider>{children}</AdventureProvider></body></html>;
 }

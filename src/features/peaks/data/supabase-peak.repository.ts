@@ -27,7 +27,8 @@ export class SupabasePeakRepository {
     if (relationsResult.error) throw new Error(relationsResult.error.message);
     if (photosResult.error) throw new Error(photosResult.error.message);
 
-    const photosByAdventure = groupPhotos(photosResult.data as PhotoRow[]);
+    const resolvedPhotos = await Promise.all((photosResult.data as PhotoRow[]).map(async photo => ({ ...photo, url: await this.resolvePhotoUrl(photo.url) })));
+    const photosByAdventure = groupPhotos(resolvedPhotos);
     const ascentsByPeak = new Map<string, PeakAscent[]>();
 
     for (const relation of relationsResult.data as unknown as RelationRow[]) {
@@ -71,6 +72,12 @@ export class SupabasePeakRepository {
         globePosition: toGlobePosition(row.id, coordinates, row.altitud),
       } satisfies PeakProfile;
     });
+  }
+
+  private async resolvePhotoUrl(path: string) {
+    if (/^(https?:\/\/|\/)/.test(path)) return path;
+    const { data, error } = await this.client.storage.from("adventure-photos").createSignedUrl(path, 60 * 60 * 6);
+    return error ? fallbackForId(path) : data.signedUrl;
   }
 }
 

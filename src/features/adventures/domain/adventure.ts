@@ -15,10 +15,59 @@ export interface Adventure {
   sensaciones: string | null;
   meteorologia: Json;
   createdAt: string;
+  peak: PeakReference | null;
+  photos: AdventurePhoto[];
 }
 
-export type AdventureInput = Omit<Adventure, "id" | "createdAt">;
+export type AdventureInput = Omit<Adventure, "id" | "createdAt" | "peak" | "photos">;
 export type AdventureUpdate = Partial<AdventureInput>;
+
+export interface PeakReference {
+  id: string;
+  nombre: string;
+  altitud: number;
+  latitud: number;
+  longitud: number;
+  provincia: string | null;
+  pais: string;
+  dificultad: AdventureDifficulty;
+  fotoPrincipalUrl: string | null;
+  globeId: string;
+}
+
+export interface AdventurePhoto {
+  id: string;
+  adventureId: string;
+  storagePath: string;
+  url: string;
+  portada: boolean;
+  descripcion: string | null;
+  orden: number;
+  width: number | null;
+  height: number | null;
+  bytes: number | null;
+  mimeType: string | null;
+}
+
+export interface PhotoDraft {
+  id: string;
+  storagePath: string | null;
+  previewUrl: string;
+  blob: Blob | null;
+  portada: boolean;
+  descripcion: string | null;
+  orden: number;
+  width: number;
+  height: number;
+  bytes: number;
+  mimeType: string;
+}
+
+export interface AdventureMutation {
+  input: AdventureInput;
+  peak: PeakReference;
+  photos: PhotoDraft[];
+}
 
 export interface Peak { id: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia: string | null; pais: string }
 export interface AdventurePeak { adventureId: string; peakId: string; orden: number }

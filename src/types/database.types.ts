@@ -10,9 +10,9 @@ export type Database = {
         Relationships: [];
       };
       peaks: {
-        Row: { id: string; globe_id: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia: string | null; pais: string; descripcion: string | null; foto_principal_url: string | null; dificultad: Database["public"]["Enums"]["adventure_difficulty"] };
-        Insert: { id?: string; globe_id?: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia?: string | null; pais: string; descripcion?: string | null; foto_principal_url?: string | null; dificultad?: Database["public"]["Enums"]["adventure_difficulty"] };
-        Update: { id?: string; globe_id?: string; nombre?: string; altitud?: number; latitud?: number; longitud?: number; provincia?: string | null; pais?: string; descripcion?: string | null; foto_principal_url?: string | null; dificultad?: Database["public"]["Enums"]["adventure_difficulty"] };
+        Row: { id: string; globe_id: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia: string | null; pais: string; descripcion: string | null; foto_principal_url: string | null; dificultad: Database["public"]["Enums"]["adventure_difficulty"]; canonical_slug: string; source: string; source_id: string | null };
+        Insert: { id?: string; globe_id?: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia?: string | null; pais: string; descripcion?: string | null; foto_principal_url?: string | null; dificultad?: Database["public"]["Enums"]["adventure_difficulty"]; canonical_slug: string; source?: string; source_id?: string | null };
+        Update: { id?: string; globe_id?: string; nombre?: string; altitud?: number; latitud?: number; longitud?: number; provincia?: string | null; pais?: string; descripcion?: string | null; foto_principal_url?: string | null; dificultad?: Database["public"]["Enums"]["adventure_difficulty"]; canonical_slug?: string; source?: string; source_id?: string | null };
         Relationships: [];
       };
       adventure_peaks: {
@@ -25,9 +25,9 @@ export type Database = {
         ];
       };
       photos: {
-        Row: { id: string; adventure_id: string; url: string; portada: boolean; descripcion: string | null };
-        Insert: { id?: string; adventure_id: string; url: string; portada?: boolean; descripcion?: string | null };
-        Update: { id?: string; adventure_id?: string; url?: string; portada?: boolean; descripcion?: string | null };
+        Row: { id: string; adventure_id: string; url: string; portada: boolean; descripcion: string | null; orden: number; width: number | null; height: number | null; bytes: number | null; mime_type: string | null; created_at: string };
+        Insert: { id?: string; adventure_id: string; url: string; portada?: boolean; descripcion?: string | null; orden: number; width?: number | null; height?: number | null; bytes?: number | null; mime_type?: string | null; created_at?: string };
+        Update: { id?: string; adventure_id?: string; url?: string; portada?: boolean; descripcion?: string | null; orden?: number; width?: number | null; height?: number | null; bytes?: number | null; mime_type?: string | null; created_at?: string };
         Relationships: [{ foreignKeyName: "photos_adventure_id_fkey"; columns: ["adventure_id"]; isOneToOne: false; referencedRelation: "adventures"; referencedColumns: ["id"] }];
       };
       equipment: {
@@ -62,7 +62,12 @@ export type Database = {
       };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      search_peaks: {
+        Args: { p_query?: string; p_limit?: number };
+        Returns: Database["public"]["Tables"]["peaks"]["Row"][];
+      };
+    };
     Enums: { adventure_difficulty: "facil" | "moderada" | "dificil" | "experta" };
     CompositeTypes: Record<string, never>;
   };

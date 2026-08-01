@@ -1,7 +1,7 @@
-import type { Adventure, AdventureInput, AdventureUpdate } from "../domain/adventure";
+import type { Adventure, AdventureInput, AdventurePhoto, AdventureUpdate, PeakReference } from "../domain/adventure";
 import type { Tables, TablesInsert, TablesUpdate } from "@/types/database.types";
 
-export function toAdventure(row: Tables<"adventures">): Adventure {
+export function toAdventure(row: Tables<"adventures">, enrichment?: { peak?: PeakReference | null; photos?: AdventurePhoto[] }): Adventure {
   return {
     id: row.id,
     titulo: row.titulo,
@@ -15,6 +15,8 @@ export function toAdventure(row: Tables<"adventures">): Adventure {
     sensaciones: row.sensaciones,
     meteorologia: row.meteorologia,
     createdAt: row.created_at,
+    peak: enrichment?.peak ?? null,
+    photos: enrichment?.photos ?? [],
   };
 }
 

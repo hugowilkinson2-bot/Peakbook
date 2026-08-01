@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { Adventure, AdventureInput, AdventureUpdate } from "../domain/adventure";
+import type { Adventure, AdventureMutation } from "../domain/adventure";
 import { SupabaseAdventureRepository } from "../data/supabase-adventure.repository";
 
 type AdventureContextValue = {
@@ -10,8 +10,8 @@ type AdventureContextValue = {
   isLoading: boolean;
   error: string | null;
   reload: () => Promise<void>;
-  createAdventure: (input: AdventureInput) => Promise<Adventure>;
-  updateAdventure: (id: string, input: AdventureUpdate) => Promise<Adventure>;
+  createAdventure: (mutation: AdventureMutation) => Promise<Adventure>;
+  updateAdventure: (id: string, mutation: AdventureMutation) => Promise<Adventure>;
   deleteAdventure: (id: string) => Promise<void>;
   clearError: () => void;
 };
@@ -48,13 +48,32 @@ export function AdventureProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => { void reload(); }, [reload]);
 
-  const createAdventure = useCallback(async (input: AdventureInput) => {
+  const createAdventure = useCallback(async (mutation: AdventureMutation) => {
     if (!repository) throw new Error(configurationMessage);
-    const temporary: Adventure = { ...input, id: `optimistic-${crypto.randomUUID()}`, createdAt: new Date().toISOString() };
+    const temporaryId = `optimistic-${crypto.randomUUID()}`;
+    const temporary: Adventure = {
+      ...mutation.input,
+      id: temporaryId,
+      createdAt: new Date().toISOString(),
+      peak: mutation.peak,
+      photos: mutation.photos.map(photo => ({
+        id: photo.id,
+        adventureId: temporaryId,
+        storagePath: photo.storagePath ?? "",
+        url: photo.previewUrl,
+        portada: photo.portada,
+        descripcion: photo.descripcion,
+        orden: photo.orden,
+        width: photo.width,
+        height: photo.height,
+        bytes: photo.bytes,
+        mimeType: photo.mimeType,
+      })),
+    };
     setAdventures(current => [temporary, ...current].sort(byNewest));
     setError(null);
     try {
-      const created = await repository.create(input);
+      const created = await repository.create(mutation);
       setAdventures(current => current.map(item => item.id === temporary.id ? created : item).sort(byNewest));
       return created;
     } catch (cause) {
@@ -65,15 +84,32 @@ export function AdventureProvider({ children }: { children: React.ReactNode }) {
     }
   }, [repository]);
 
-  const updateAdventure = useCallback(async (id: string, input: AdventureUpdate) => {
+  const updateAdventure = useCallback(async (id: string, mutation: AdventureMutation) => {
     if (!repository) throw new Error(configurationMessage);
     const previous = adventures.find(item => item.id === id);
     if (!previous) throw new Error("La aventura ya no está disponible.");
-    const optimistic = { ...previous, ...input };
+    const optimistic: Adventure = {
+      ...previous,
+      ...mutation.input,
+      peak: mutation.peak,
+      photos: mutation.photos.map(photo => ({
+        id: photo.id,
+        adventureId: id,
+        storagePath: photo.storagePath ?? "",
+        url: photo.previewUrl,
+        portada: photo.portada,
+        descripcion: photo.descripcion,
+        orden: photo.orden,
+        width: photo.width,
+        height: photo.height,
+        bytes: photo.bytes,
+        mimeType: photo.mimeType,
+      })),
+    };
     setAdventures(current => current.map(item => item.id === id ? optimistic : item).sort(byNewest));
     setError(null);
     try {
-      const updated = await repository.update(id, input);
+      const updated = await repository.update(id, mutation);
       setAdventures(current => current.map(item => item.id === id ? updated : item).sort(byNewest));
       return updated;
     } catch (cause) {

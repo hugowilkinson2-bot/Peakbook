@@ -46,10 +46,11 @@ export class SupabaseMemoryRepository {
     const photosByAdventure = new Map<string, MemoryPhoto[]>();
     for (const row of photoResult.data as PhotoRow[]) {
       const current = photosByAdventure.get(row.adventure_id) ?? [];
+      const url = await this.resolvePhotoUrl(row.url);
       current.push({
         id: row.id,
         adventureId: row.adventure_id,
-        url: row.url,
+        url,
         portada: row.portada,
         descripcion: row.descripcion,
       });
@@ -57,5 +58,11 @@ export class SupabaseMemoryRepository {
     }
 
     return { peaksByAdventure, photosByAdventure };
+  }
+
+  private async resolvePhotoUrl(path: string) {
+    if (/^(https?:\/\/|\/)/.test(path)) return path;
+    const { data, error } = await this.client.storage.from("adventure-photos").createSignedUrl(path, 60 * 60 * 6);
+    return error ? "/memories-summit.png" : data.signedUrl;
   }
 }

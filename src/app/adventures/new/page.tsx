@@ -9,7 +9,7 @@ import { AdventureForm } from "@/features/adventures/components/adventure-form";
 export default function NewAdventurePage() {
   const router = useRouter();
   const { createAdventure } = useAdventures();
-  return <AppShell><ScreenHeader eyebrow="Un nuevo recuerdo" title="Nueva aventura" description="Registra lo esencial. Podrás volver y editarlo cuando quieras."/>
-    <AdventureForm submitLabel="Crear aventura" onSubmit={async input => { const created = await createAdventure(input); router.replace(`/adventures/${created.id}`); }}/>
+  return <AppShell><ScreenHeader eyebrow="Un nuevo recuerdo" title="Nueva aventura" description="Elige la montaña, guarda lo esencial y deja que PeakBook complete el resto."/>
+    <AdventureForm submitLabel="Guardar aventura" onSubmit={async mutation => { const created = await createAdventure(mutation); router.replace(`/adventures/${created.id}`); }}/>
   </AppShell>;
 }
