@@ -1,4 +1,4 @@
-import type { createClient } from "@/lib/supabase/client";
+import { ensureSupabaseSession, type createClient } from "@/lib/supabase/client";
 import type { MemoryEnrichment, MemoryPeak, MemoryPhoto } from "../domain/memory";
 
 type PeakRelationRow = {
@@ -19,6 +19,7 @@ export class SupabaseMemoryRepository {
   constructor(private readonly client: NonNullable<ReturnType<typeof createClient>>) {}
 
   async getEnrichment(adventureIds: string[]): Promise<MemoryEnrichment> {
+    await ensureSupabaseSession(this.client);
     const [peakResult, photoResult] = await Promise.all([
       this.client
         .from("adventure_peaks")
@@ -58,4 +59,3 @@ export class SupabaseMemoryRepository {
     return { peaksByAdventure, photosByAdventure };
   }
 }
-

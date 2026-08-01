@@ -24,7 +24,15 @@ El esquema usa nombres `snake_case` en PostgreSQL y entidades PascalCase en Type
 
 La primera versión utilizable incluye CRUD completo de aventuras, persistencia Supabase, mutaciones optimistas con rollback, estados de carga/error, búsqueda, filtro por año y ordenación por fecha. GPX, fotos y mapas permanecen fuera de alcance.
 
-Para conectarla, copia `.env.example` a `.env.local`, configura la URL y la clave publicable de Supabase y aplica las migraciones de `supabase/migrations`.
+Para conectarla, copia `.env.example` a `.env.local`, configura la URL y la clave publicable de Supabase, activa **Anonymous Sign-Ins** en Auth y aplica las migraciones de `supabase/migrations`.
+
+Comprueba la conexión y el CRUD completo con:
+
+```bash
+npm run verify:supabase
+```
+
+El verificador crea, lista, abre, edita y elimina una aventura temporal usando la misma clave pública y las mismas políticas RLS que la aplicación.
 
 ## v0.6 · The WOW Release
 

@@ -4,9 +4,9 @@ export type Database = {
   public: {
     Tables: {
       adventures: {
-        Row: { id: string; titulo: string; fecha: string; notas: string | null; distancia: number; desnivel_positivo: number; desnivel_negativo: number; tiempo: number; dificultad: Database["public"]["Enums"]["adventure_difficulty"]; sensaciones: string | null; meteorologia: Json; created_at: string };
-        Insert: { id?: string; titulo: string; fecha: string; notas?: string | null; distancia?: number; desnivel_positivo?: number; desnivel_negativo?: number; tiempo?: number; dificultad: Database["public"]["Enums"]["adventure_difficulty"]; sensaciones?: string | null; meteorologia?: Json; created_at?: string };
-        Update: { id?: string; titulo?: string; fecha?: string; notas?: string | null; distancia?: number; desnivel_positivo?: number; desnivel_negativo?: number; tiempo?: number; dificultad?: Database["public"]["Enums"]["adventure_difficulty"]; sensaciones?: string | null; meteorologia?: Json; created_at?: string };
+        Row: { id: string; owner_id: string | null; titulo: string; fecha: string; notas: string | null; distancia: number; desnivel_positivo: number; desnivel_negativo: number; tiempo: number; dificultad: Database["public"]["Enums"]["adventure_difficulty"]; sensaciones: string | null; meteorologia: Json; created_at: string };
+        Insert: { id?: string; owner_id?: string; titulo: string; fecha: string; notas?: string | null; distancia?: number; desnivel_positivo?: number; desnivel_negativo?: number; tiempo?: number; dificultad: Database["public"]["Enums"]["adventure_difficulty"]; sensaciones?: string | null; meteorologia?: Json; created_at?: string };
+        Update: { id?: string; owner_id?: string; titulo?: string; fecha?: string; notas?: string | null; distancia?: number; desnivel_positivo?: number; desnivel_negativo?: number; tiempo?: number; dificultad?: Database["public"]["Enums"]["adventure_difficulty"]; sensaciones?: string | null; meteorologia?: Json; created_at?: string };
         Relationships: [];
       };
       peaks: {

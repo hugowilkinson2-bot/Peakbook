@@ -1,4 +1,4 @@
-import type { createClient } from "@/lib/supabase/client";
+import { ensureSupabaseSession, type createClient } from "@/lib/supabase/client";
 import type { Tables } from "@/types/database.types";
 import { calculatePeakStats, toGlobePosition, type PeakAscent, type PeakProfile } from "../domain/peak";
 
@@ -16,6 +16,7 @@ export class SupabasePeakRepository {
   constructor(private readonly client: NonNullable<ReturnType<typeof createClient>>) {}
 
   async list(): Promise<PeakProfile[]> {
+    await ensureSupabaseSession(this.client);
     const [peaksResult, relationsResult, photosResult] = await Promise.all([
       this.client.from("peaks").select("*").order("altitud", { ascending: false }),
       this.client.from("adventure_peaks").select("peak_id, adventure_id, adventures(*)"),
@@ -88,4 +89,3 @@ function fallbackForId(id: string) {
   for (const character of id) hash = (hash * 31 + character.charCodeAt(0)) >>> 0;
   return fallbackImages[hash % fallbackImages.length];
 }
-
