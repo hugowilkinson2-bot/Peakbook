@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { PageHeader } from "@/components/page-header";
+import { ResponsivePhoto } from "@/components/responsive-photo";
 import { IconButton, SectionTitle } from "@/components/ui";
 import { useAdventures } from "@/features/adventures/application/adventure-provider";
 import { AdventureCard } from "@/features/adventures/components/adventure-card";
@@ -15,12 +15,14 @@ import type { LucideIcon } from "lucide-react";
 export default function Home() {
   const { adventures, isLoading, error, reload } = useAdventures();
   const latest = adventures[0];
+  const latestCover = latest?.photos.find(photo => photo.portada) ?? latest?.photos[0];
+  const latestImage = latestCover?.url ?? latest?.peak?.fotoPrincipalUrl ?? "/peakbook-hero.png";
   const totalDistance = adventures.reduce((total,item)=>total+item.distancia,0);
   const totalElevation = adventures.reduce((total,item)=>total+item.desnivelPositivo,0);
 
   return <AppShell><PageHeader/><div className="stagger-in">
     <section className="premium-card relative min-h-[31rem] overflow-hidden rounded-[2rem] bg-forest shadow-[0_26px_80px_rgba(14,30,22,.2)] md:min-h-[35rem]">
-      <Image src="/peakbook-hero.png" alt="Aventura de montaña al amanecer en los Pirineos" fill priority sizes="(max-width: 1152px) 100vw, 1056px" className="object-cover"/>
+      <ResponsivePhoto src={latestImage} fallbackSrc="/peakbook-hero.png" alt={latest ? `Portada de ${latest.peak?.nombre ?? latest.titulo}` : "Aventura de montaña al amanecer en los Pirineos"} priority sizes="(max-width: 1152px) 100vw, 1056px" className="object-cover"/>
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,16,13,.12)_0%,rgba(10,16,13,.08)_35%,rgba(10,16,13,.88)_100%)]"/>
       <div className="absolute inset-x-5 top-5 flex items-center justify-between md:inset-x-7 md:top-7"><span className="rounded-full border border-white/20 bg-black/20 px-3.5 py-2 text-[10px] font-bold uppercase tracking-[.18em] text-white backdrop-blur-xl">{latest ? "Última aventura" : "PeakBook"}</span><Link href={latest?`/adventures/${latest.id}`:"/adventures/new"} aria-label={latest?"Ver última aventura":"Crear primera aventura"} className="tap-scale grid h-11 w-11 place-items-center rounded-full border border-white/25 bg-white/90 text-ink shadow-float backdrop-blur">{latest?<ArrowRight size={18}/>:<Plus size={18}/>}</Link></div>
       <div className="absolute inset-x-5 bottom-5 text-white md:inset-x-7 md:bottom-7">{isLoading ? <div className="h-28 animate-pulse rounded-2xl bg-white/10"/> : latest ? <><div className="mb-3 flex items-center gap-1.5 text-xs text-white/68"><CalendarDays size={14}/>{formatDate(latest.fecha)}</div><h1 className="max-w-xl text-[2.55rem] font-semibold leading-[.98] tracking-[-.06em] md:text-6xl">{latest.titulo}</h1><div className="mt-6 grid grid-cols-3 divide-x divide-white/15 rounded-[1.3rem] border border-white/15 bg-white/10 px-2 py-4 backdrop-blur-xl md:max-w-xl"><HeroMetric icon={Route} value={formatDistance(latest.distancia)} label="Distancia"/><HeroMetric icon={Mountain} value={formatElevation(latest.desnivelPositivo)} label="Desnivel"/><HeroMetric icon={Clock3} value={formatDuration(latest.tiempo)} label="Tiempo"/></div></> : <><p className="text-xs font-semibold uppercase tracking-[.18em] text-lime">Tu historia en la montaña</p><h1 className="mt-3 max-w-xl text-[2.55rem] font-semibold leading-[.98] tracking-[-.06em] md:text-6xl">Tu primera aventura empieza aquí.</h1><Link href="/adventures/new" className="tap-scale mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-xs font-semibold text-forest">Crear aventura<ArrowRight size={15}/></Link></>}</div>
