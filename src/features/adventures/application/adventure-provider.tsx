@@ -2,18 +2,20 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { Adventure, AdventureMutation } from "../domain/adventure";
+import type { Adventure, AdventureMutation, AdventureSaveResult } from "../domain/adventure";
 import { SupabaseAdventureRepository } from "../data/supabase-adventure.repository";
 
 type AdventureContextValue = {
   adventures: Adventure[];
   isLoading: boolean;
   error: string | null;
+  notice: string | null;
   reload: () => Promise<void>;
-  createAdventure: (mutation: AdventureMutation) => Promise<Adventure>;
-  updateAdventure: (id: string, mutation: AdventureMutation) => Promise<Adventure>;
+  createAdventure: (mutation: AdventureMutation) => Promise<AdventureSaveResult>;
+  updateAdventure: (id: string, mutation: AdventureMutation) => Promise<AdventureSaveResult>;
   deleteAdventure: (id: string) => Promise<void>;
   clearError: () => void;
+  clearNotice: () => void;
 };
 
 const AdventureContext = createContext<AdventureContextValue | null>(null);
@@ -24,6 +26,7 @@ export function AdventureProvider({ children }: { children: React.ReactNode }) {
   const [adventures, setAdventures] = useState<Adventure[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const repository = useMemo(() => {
     const client = createClient();
     return client ? new SupabaseAdventureRepository(client) : null;
@@ -73,9 +76,10 @@ export function AdventureProvider({ children }: { children: React.ReactNode }) {
     setAdventures(current => [temporary, ...current].sort(byNewest));
     setError(null);
     try {
-      const created = await repository.create(mutation);
-      setAdventures(current => current.map(item => item.id === temporary.id ? created : item).sort(byNewest));
-      return created;
+      const result = await repository.create(mutation);
+      setAdventures(current => current.map(item => item.id === temporary.id ? result.adventure : item).sort(byNewest));
+      setNotice(result.warning);
+      return result;
     } catch (cause) {
       setAdventures(current => current.filter(item => item.id !== temporary.id));
       const message = readError(cause, "No hemos podido guardar la aventura.");
@@ -109,9 +113,10 @@ export function AdventureProvider({ children }: { children: React.ReactNode }) {
     setAdventures(current => current.map(item => item.id === id ? optimistic : item).sort(byNewest));
     setError(null);
     try {
-      const updated = await repository.update(id, mutation);
-      setAdventures(current => current.map(item => item.id === id ? updated : item).sort(byNewest));
-      return updated;
+      const result = await repository.update(id, mutation);
+      setAdventures(current => current.map(item => item.id === id ? result.adventure : item).sort(byNewest));
+      setNotice(result.warning);
+      return result;
     } catch (cause) {
       setAdventures(current => current.map(item => item.id === id ? previous : item).sort(byNewest));
       const message = readError(cause, "No hemos podido actualizar la aventura.");
@@ -135,7 +140,7 @@ export function AdventureProvider({ children }: { children: React.ReactNode }) {
     }
   }, [adventures, repository]);
 
-  const value = useMemo<AdventureContextValue>(() => ({ adventures, isLoading, error, reload, createAdventure, updateAdventure, deleteAdventure, clearError: () => setError(null) }), [adventures, isLoading, error, reload, createAdventure, updateAdventure, deleteAdventure]);
+  const value = useMemo<AdventureContextValue>(() => ({ adventures, isLoading, error, notice, reload, createAdventure, updateAdventure, deleteAdventure, clearError: () => setError(null), clearNotice: () => setNotice(null) }), [adventures, isLoading, error, notice, reload, createAdventure, updateAdventure, deleteAdventure]);
   return <AdventureContext.Provider value={value}>{children}</AdventureContext.Provider>;
 }
 

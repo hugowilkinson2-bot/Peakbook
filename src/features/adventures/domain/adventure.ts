@@ -69,6 +69,11 @@ export interface AdventureMutation {
   photos: PhotoDraft[];
 }
 
+export interface AdventureSaveResult {
+  adventure: Adventure;
+  warning: string | null;
+}
+
 export interface Peak { id: string; nombre: string; altitud: number; latitud: number; longitud: number; provincia: string | null; pais: string }
 export interface AdventurePeak { adventureId: string; peakId: string; orden: number }
 export interface Photo { id: string; adventureId: string; url: string; portada: boolean; descripcion: string | null }

@@ -8,13 +8,13 @@ import { ResponsivePhoto } from "@/components/responsive-photo";
 import { useAdventures } from "../application/adventure-provider";
 import { AdventureError, AdventureLoading } from "./adventure-states";
 import { formatDate, formatDifficulty, formatDistance, formatDuration, formatElevation, formatWeather } from "../presentation/formatters";
-import { ArrowLeft, CalendarDays, Clock3, CloudSun, Gauge, HeartPulse, Mountain, NotebookPen, Pencil, Route, Trash2 } from "lucide-react";
+import { AlertCircle, ArrowLeft, CalendarDays, Clock3, CloudSun, Gauge, HeartPulse, Mountain, NotebookPen, Pencil, Route, Trash2, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { AdventureGallery } from "./adventure-gallery";
 
 export function AdventureDetailScreen({ id }: { id: string }) {
   const router = useRouter();
-  const { adventures, isLoading, error, reload, deleteAdventure } = useAdventures();
+  const { adventures, isLoading, error, notice, clearNotice, reload, deleteAdventure } = useAdventures();
   const [isDeleting, setIsDeleting] = useState(false);
   const adventure = adventures.find(item => item.id === id);
 
@@ -34,6 +34,7 @@ export function AdventureDetailScreen({ id }: { id: string }) {
   }
 
   return <AppShell>
+    {notice && <div role="status" className="mb-4 flex items-start gap-3 rounded-[1.25rem] border border-[#b66a32]/15 bg-[#fff5e9] px-4 py-3 text-[#7b431d]"><AlertCircle size={18} className="mt-0.5 shrink-0"/><p className="flex-1 text-xs leading-5">{notice}</p><button type="button" onClick={clearNotice} aria-label="Cerrar aviso" className="tap-scale grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white/70"><X size={13}/></button></div>}
     <header className="mb-5 flex items-center justify-between"><Link href="/adventures" aria-label="Volver a aventuras" className="tap-scale grid h-11 w-11 place-items-center rounded-full border border-black/[.05] bg-white shadow-sm"><ArrowLeft size={18}/></Link><div className="flex gap-2"><Link href={`/adventures/${id}/edit`} className="tap-scale flex h-11 items-center gap-2 rounded-full border border-black/[.05] bg-white px-4 text-xs font-semibold shadow-sm"><Pencil size={15}/>Editar</Link><button disabled={isDeleting} onClick={()=>void handleDelete()} aria-label="Eliminar aventura" className="tap-scale grid h-11 w-11 place-items-center rounded-full bg-[#a84539] text-white shadow-sm disabled:opacity-50"><Trash2 size={17}/></button></div></header>
 
     <article className="overflow-hidden rounded-[2rem] bg-white shadow-card">

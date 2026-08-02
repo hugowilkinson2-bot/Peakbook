@@ -1,3 +1,6 @@
+import { withTimeout } from "@/lib/async-timeout";
+import { MAX_UPLOAD_IMAGE_BYTES, validateSourceImage } from "./photo-policy";
+
 export type OptimizedImage = {
   blob: Blob;
   width: number;
@@ -8,9 +11,14 @@ export type OptimizedImage = {
 
 const MAX_EDGE = 2048;
 const QUALITY = 0.82;
+const OPTIMIZATION_TIMEOUT_MS = 15_000;
 
 export async function optimizeImage(file: File): Promise<OptimizedImage> {
-  if (!file.type.startsWith("image/")) throw new Error(`${file.name} no es una imagen compatible.`);
+  validateSourceImage(file);
+  return withTimeout(optimize(file), OPTIMIZATION_TIMEOUT_MS, `${file.name}: la optimización tardó demasiado. Prueba con una imagen más pequeña.`);
+}
+
+async function optimize(file: File): Promise<OptimizedImage> {
   const source = await decodeImage(file);
   const scale = Math.min(1, MAX_EDGE / Math.max(source.width, source.height));
   const width = Math.max(1, Math.round(source.width * scale));
@@ -24,6 +32,7 @@ export async function optimizeImage(file: File): Promise<OptimizedImage> {
   source.close();
   const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, "image/webp", QUALITY));
   if (!blob) throw new Error(`No se pudo optimizar ${file.name}.`);
+  if (blob.size > MAX_UPLOAD_IMAGE_BYTES) throw new Error(`${file.name}: la imagen optimizada sigue superando el máximo de 6 MB.`);
   return { blob, width, height, bytes: blob.size, mimeType: "image/webp" };
 }
 

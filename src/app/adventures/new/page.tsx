@@ -10,6 +10,6 @@ export default function NewAdventurePage() {
   const router = useRouter();
   const { createAdventure } = useAdventures();
   return <AppShell><ScreenHeader eyebrow="Un nuevo recuerdo" title="Nueva aventura" description="Elige la montaña, guarda lo esencial y deja que PeakBook complete el resto."/>
-    <AdventureForm submitLabel="Guardar aventura" onSubmit={async mutation => { const created = await createAdventure(mutation); router.replace(`/adventures/${created.id}`); }}/>
+    <AdventureForm submitLabel="Guardar aventura" onSubmit={async mutation => { const result = await createAdventure(mutation); router.replace(`/adventures/${result.adventure.id}`); }}/>
   </AppShell>;
 }

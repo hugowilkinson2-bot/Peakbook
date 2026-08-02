@@ -73,7 +73,7 @@ export function PhotoManager({ photos, onChange }: { photos: PhotoDraft[]; onCha
   }
 
   return <section className="rounded-[1.8rem] border border-black/[.035] bg-white p-5 shadow-card sm:p-7">
-    <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[.2em] text-moss">Tu álbum</p><h2 className="mt-1 text-xl font-semibold tracking-[-.035em]">Fotografías</h2><p className="mt-2 max-w-xl text-xs leading-5 text-ink/45">Se optimizan antes de subirlas. Arrastra para ordenar y elige la imagen que abrirá el recuerdo.</p></div><span className="rounded-full bg-canvas px-3 py-1.5 text-[10px] font-bold text-moss">{photos.length}/{MAX_PHOTOS}</span></div>
+    <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[.2em] text-moss">Tu álbum</p><h2 className="mt-1 text-xl font-semibold tracking-[-.035em]">Fotografías</h2><p className="mt-2 max-w-xl text-xs leading-5 text-ink/45">JPG, PNG o WebP · máximo 20 MB por archivo. Se optimizan antes de subirlas.</p></div><span className="rounded-full bg-canvas px-3 py-1.5 text-[10px] font-bold text-moss">{photos.length}/{MAX_PHOTOS}</span></div>
 
     <input ref={inputRef} type="file" multiple accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={event => void addFiles(event.target.files)}/>
     <button type="button" disabled={isOptimizing || photos.length >= MAX_PHOTOS} onClick={() => inputRef.current?.click()} className="tap-scale mt-5 flex min-h-28 w-full items-center justify-center gap-3 rounded-[1.35rem] border border-dashed border-forest/20 bg-forest/[.025] text-sm font-semibold text-forest transition-colors hover:bg-forest/[.055] disabled:opacity-50">

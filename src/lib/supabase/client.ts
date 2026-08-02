@@ -6,6 +6,7 @@ type PeakBookSupabaseClient = SupabaseClient<Database>;
 
 let browserClient: PeakBookSupabaseClient | null = null;
 let sessionPromise: Promise<Session> | null = null;
+const SUPABASE_REQUEST_TIMEOUT_MS = 25_000;
 
 export function createClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -20,9 +21,24 @@ export function createClient() {
       detectSessionInUrl: false,
       persistSession: true,
     },
+    global: { fetch: fetchWithTimeout },
   });
 
   return browserClient;
+}
+
+async function fetchWithTimeout(input: RequestInfo | URL, init?: RequestInit) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), SUPABASE_REQUEST_TIMEOUT_MS);
+  const abort = () => controller.abort();
+  init?.signal?.addEventListener("abort", abort, { once: true });
+  if (init?.signal?.aborted) controller.abort();
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeoutId);
+    init?.signal?.removeEventListener("abort", abort);
+  }
 }
 
 export async function ensureSupabaseSession(client: PeakBookSupabaseClient): Promise<Session> {

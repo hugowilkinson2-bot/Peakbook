@@ -25,9 +25,9 @@ export type Database = {
         ];
       };
       photos: {
-        Row: { id: string; adventure_id: string; url: string; portada: boolean; descripcion: string | null; orden: number; width: number | null; height: number | null; bytes: number | null; mime_type: string | null; created_at: string };
-        Insert: { id?: string; adventure_id: string; url: string; portada?: boolean; descripcion?: string | null; orden: number; width?: number | null; height?: number | null; bytes?: number | null; mime_type?: string | null; created_at?: string };
-        Update: { id?: string; adventure_id?: string; url?: string; portada?: boolean; descripcion?: string | null; orden?: number; width?: number | null; height?: number | null; bytes?: number | null; mime_type?: string | null; created_at?: string };
+        Row: { id: string; adventure_id: string; url: string; portada: boolean; descripcion: string | null; orden: number; width: number | null; height: number | null; bytes: number | null; mime_type: string | null; upload_status: "pending" | "ready" | "cleanup_required"; created_at: string };
+        Insert: { id?: string; adventure_id: string; url: string; portada?: boolean; descripcion?: string | null; orden: number; width?: number | null; height?: number | null; bytes?: number | null; mime_type?: string | null; upload_status?: "pending" | "ready" | "cleanup_required"; created_at?: string };
+        Update: { id?: string; adventure_id?: string; url?: string; portada?: boolean; descripcion?: string | null; orden?: number; width?: number | null; height?: number | null; bytes?: number | null; mime_type?: string | null; upload_status?: "pending" | "ready" | "cleanup_required"; created_at?: string };
         Relationships: [{ foreignKeyName: "photos_adventure_id_fkey"; columns: ["adventure_id"]; isOneToOne: false; referencedRelation: "adventures"; referencedColumns: ["id"] }];
       };
       equipment: {
